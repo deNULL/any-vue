@@ -1,12 +1,28 @@
-$dark-color: #402f2b;
+$font: SFProText-Medium, -apple-system, Helvetica Neue, Arial;
+$easing: cubic-bezier(.36, .66, .04, 1);
+
+$font-size-normal: 16px;
+
+$white: #fff;
 
 .os-ios {
+  font-family: $font;
+  font-size: $font-size-normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  button {
+    font-family: $font;
+    outline-style: none;
+    box-shadow: none;
+    border-color: transparent;
+  }
 
   .a-button {
-    color: #fff;
+    text-align: center;
   }
 }
 
 :export {
-  darkcolor: $dark-color;
+  white: $white
 }

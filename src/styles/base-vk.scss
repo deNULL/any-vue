@@ -1,5 +1,82 @@
-.base-vk {
-  .a-button {
+$color-base: #5181B8;
+$color-base-light: #528BCC;
+$color-base-dark: #4872A3;
+$color-base-darkest: #003973;
 
+$color-text-dark: #45678F;
+$color-text: $color-base;
+$color-text-light: $color-base-light;
+
+$color-commerce: #4BB34B;
+$color-commerce-dark: #429E42;
+
+.base-vk {
+
+
+  .a-button {
+    background: $color-base;
+    color: #fff;
+    border-radius: 18px;
+    font-size: 15px;
+    padding: 8.5px 16px 9.5px;
+    letter-spacing: -0.24px;
+  }
+  .a-button:active {
+    background: $color-base-dark;
+  }
+  .a-button.is-disabled {
+    opacity: 0.4;
+  }
+  .a-button.is-small {
+    border-radius: 16px;
+    font-size: 14px;
+    padding: 6.5px 16px 7.5px;
+    letter-spacing: -0.15px;
+  }
+  .a-button.is-large {
+    border-radius: 10px;
+    font-size: 17px;
+    padding: 11.5px 16px 12.5px;
+    letter-spacing: -0.41px;
+  }
+  .a-button.is-secondary {
+    background: rgba($color-base-darkest, 0.1);
+    color: $color-text-dark;
+  }
+  .a-button.is-secondary:active {
+    background: rgba($color-base-darkest, 0.2);
+    color: $color-text-dark;
+  }
+  .a-button.is-muted {
+    background: rgba($color-base-darkest, 0.08);
+    color: $color-text;
+  }
+  .a-button.is-muted:active {
+    background: rgba($color-base-darkest, 0.16);
+    color: $color-text;
+  }
+  .a-button.is-tertiary {
+    background: transparent;
+    color: $color-text;
+  }
+  .a-button.is-tertiary:active {
+    background: rgba($color-base-darkest, 0.08);
+    color: $color-text;
+  }
+  .a-button.is-outlined {
+    background: transparent;
+    border-width: 1px;
+    border-style: solid;
+    border-color: $color-base-light;
+    color: $color-text-light;
+  }
+  .a-button.is-outlined:active {
+    background: rgba($color-base-light, 0.1);
+  }
+  .a-button.is-commerce {
+    background: $color-commerce;
+  }
+  .a-button.is-commerce:active {
+    background: $color-commerce-dark;
   }
 }

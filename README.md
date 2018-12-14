@@ -28,7 +28,7 @@ Any component (or — in rare occasions — its part) can have a modifier. Usual
 Stylesheets are usually loaded selectively (no need to load a CSS file for Android look-and-feel if your user is running iOS), but to avoid accidential mixing, body tag receives classes corressponding to the current style:
 
 .os-android/.os-ios/.os-mac/.os-win for system level
-.brand-vk for brand level
+.base-vk for base level
 .theme-dark/.theme-red/.theme-flat for theme level
 
 There's also a "util-" prefix for some utility classes. Those usually are not very semantically correct, and should be avoided.
