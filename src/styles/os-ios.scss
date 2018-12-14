@@ -1,0 +1,12 @@
+$dark-color: #402f2b;
+
+.os-ios {
+
+  .a-button {
+    color: #fff;
+  }
+}
+
+:export {
+  darkcolor: $dark-color;
+}
