@@ -77,6 +77,18 @@ There's also a "util-" prefix for some utility classes. Those usually are not ve
     <td align="center">▢</td>
   </tr>
   <tr>
+    <td><nobr>a-checkbox</nobr></td>
+    <td>A checkbox. Can be in the indeterminate state.</td>
+    <td align="center">▢</td>
+    <td align="center">▢</td>
+  </tr>
+  <tr>
+    <td><nobr>a-radio</nobr></td>
+    <td>A radio button. Can be in the indeterminate state.</td>
+    <td align="center">▢</td>
+    <td align="center">▢</td>
+  </tr>
+  <tr>
     <td><nobr>a-spinner</nobr></td>
     <td>Spinning circle to indicate some loading is in progress.</td>
     <td align="center">✅</td>
@@ -146,6 +158,14 @@ There's also a "util-" prefix for some utility classes. Those usually are not ve
     <th align="left" colspan="4">View Controllers</th>
   </tr>
 </table>
+
+## Usage
+
+```
+npm install any-vue --save
+```
+
+TODO: add instructions for using the components
 
 ## Project setup
 ```
