@@ -1,0 +1,15 @@
+* {
+  box-sizing: border-box;
+}
+
+@keyframes spin12cw {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin12ccw {
+  to {
+    transform: rotate(-360deg);
+  }
+}

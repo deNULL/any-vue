@@ -2,6 +2,12 @@ $font: Roboto, Arial;
 $easing: cubic-bezier(.4, 0, .2, 1);
 
 .os-android {
+  box-sizing: border-box;
+  font-family: $font;
+  font-size: $font-size-normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
   .a-button {
 
   }
