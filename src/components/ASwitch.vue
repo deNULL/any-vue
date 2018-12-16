@@ -1,7 +1,7 @@
 <template>
   <div
     class="a-switch"
-    :class="className"
+    :class="classList"
     @click="!disabled && toggle()">
     <div class="a-switch__knob"></div>
   </div>
@@ -11,20 +11,29 @@
 export default {
   name: 'ASwitch',
   props: {
-    value: Boolean,
+    value: null,
+    valueOn: {
+      default: true,
+    },
+    valueOff: {
+      default: false,
+    },
     disabled: Boolean,
   },
   computed: {
-    className() {
+    classList() {
       return [
-        this.value ? `is-on` : 'is-off',
+        this.isOn ? `is-on` : 'is-off',
         this.disabled && `is-disabled`,
       ];
+    },
+    isOn() {
+      return this.value == this.valueOn;
     }
   },
   methods: {
     toggle() {
-      this.$emit('input', !this.value);
+      this.$emit('input', this.isOn ? this.valueOff : this.valueOn);
     }
   }
 }

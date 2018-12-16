@@ -1,7 +1,7 @@
 <template>
   <button
     class="a-button"
-    :class="className" 
+    :class="classList" 
     :disabled="disabled" 
     @click="$emit('click')">
     <slot></slot>
@@ -23,7 +23,7 @@ export default {
     disabled: Boolean,
   },
   computed: {
-    className() {
+    classList() {
       return [
         this.size && `is-${this.size}`,
         this.kind && `is-${this.kind}`,

@@ -1,7 +1,7 @@
 <template>
   <div
     class="a-spinner"
-    :class="className">
+    :class="classList">
   </div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
     }
   },
   computed: {
-    className() {
+    classList() {
       return [
         this.size && `is-${this.size}`
       ];

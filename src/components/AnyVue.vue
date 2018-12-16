@@ -1,7 +1,7 @@
 <template>
   <div
     class="any-vue"
-    :class="className">
+    :class="classList">
     <slot></slot>
     <div class="any-vue__tabbar"></div>
     <div class="any-vue__alerts"></div>
@@ -26,7 +26,7 @@ export default {
     },
   },
   computed: {
-    className() {
+    classList() {
       return [
         this.os && `os-${this.os}`,
         this.base && `base-${this.base}`,
