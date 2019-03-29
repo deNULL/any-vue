@@ -6,6 +6,7 @@
     <a-spinner/><br/><br/>
     <a-spinner size="small"/><br/><br/>
     <a-switch v-model="switchState" value-on="A" value-off="B"/><br/><br/>
+    <a-checkbox v-model="checkState" :value-on="true" disabled>Some label</a-checkbox><br/><br/>
     <a-checkbox v-model="checkState" :value-on="true">Some label</a-checkbox>
   </any-vue>
 </template>
@@ -15,7 +16,7 @@ export default {
   data() {
     return {
       switchState: false,
-      checkState: 0
+      checkState: true
     }
   }
 }

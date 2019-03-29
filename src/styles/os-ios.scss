@@ -1,6 +1,7 @@
 @import 'base';
 
-$font: SFProText-Medium, -apple-system, Helvetica Neue, Arial;
+$font: SFProText-Regular, -apple-system, Helvetica Neue, Arial;
+$font-bold: SFProText-Medium, -apple-system, Helvetica Neue, Arial;
 $easing: cubic-bezier(.36, .66, .04, 1);
 
 $font-size-normal: 16px;
@@ -25,7 +26,11 @@ $white: #fff;
   -moz-osx-font-smoothing: grayscale;
 
   button {
-    font-family: $font;
+    font-family: $font-bold;
+    font-weight: 400;
+  }
+
+  button, input {
     outline-style: none;
     box-shadow: none;
     border-color: transparent;

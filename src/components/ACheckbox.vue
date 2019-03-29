@@ -17,6 +17,10 @@
 export default {
   name: 'ACheckbox',
   props: {
+    kind: {
+      type: String,
+      default: 'normal',
+    },
     value: null,
     valueOn: {
       default: true,
@@ -29,6 +33,7 @@ export default {
   computed: {
     classList() {
       return [
+        this.kind && `is-${this.kind}`,
         this.isOn ? `is-on` : 'is-off',
         this.disabled && `is-disabled`,
         this.indeterminate && `is-indeterminate`,
