@@ -14,6 +14,7 @@ import ACheckbox from './components/ACheckbox.vue';
 import ASpinner from './components/ASpinner.vue';
 import AList from './components/AList.vue';
 import ATextInput from './components/ATextInput.vue';
+import ATabBar from './components/ATabBar.vue';
 
 Vue.component('any-vue', AnyVue);
 Vue.component('a-button', AButton);
@@ -22,6 +23,7 @@ Vue.component('a-checkbox', ACheckbox);
 Vue.component('a-spinner', ASpinner);
 Vue.component('a-list', AList);
 Vue.component('a-text-input', ATextInput);
+Vue.component('a-tab-bar', ATabBar);
 
 Vue.config.productionTip = false;
 //console.log(os.darkcolor);

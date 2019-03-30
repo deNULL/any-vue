@@ -1,5 +1,15 @@
 <template>
-  <any-vue id="app">
+  <any-vue id="app" :os="['ios','android','mac','win'][tabIndex]" :base="checkState ? 'vk' : 'none'">
+    <h3>a-tab-bar:</h3>
+    <a-tab-bar :tabs="['iOS','Android','Mac','Win']" v-model="tabIndex"></a-tab-bar>
+    <a-tab-bar :tabs="[1,2,3]" kind="secondary" v-model="tabIndex"></a-tab-bar>
+    <div style="background: #5181b8; padding: 10px">
+      <a-tab-bar :tabs="[1,2,3]" location="header" v-model="tabIndex"></a-tab-bar>
+      <a-tab-bar :tabs="[1,2,3]" location="header" kind="secondary" v-model="tabIndex"></a-tab-bar>
+    </div>
+    <h3>a-checkbox:</h3>
+    <a-checkbox v-model="checkState" :value-on="true" disabled>Some label</a-checkbox><br/><br/>
+    <a-checkbox v-model="checkState" :value-on="true">Use VK brand styling</a-checkbox>
     <h3>a-button:</h3>
     <a-button>Default</a-button><br/><br/>
     <a-button size="small" kind="secondary">is-secondary</a-button><br/><br/>
@@ -13,9 +23,6 @@
     <a-spinner size="small"/><br/><br/>
     <h3>a-switch:</h3>
     <a-switch v-model="switchState" value-on="A" value-off="B"/><br/><br/>
-    <h3>a-checkbox:</h3>
-    <a-checkbox v-model="checkState" :value-on="true" disabled>Some label</a-checkbox><br/><br/>
-    <a-checkbox v-model="checkState" :value-on="true">Some label</a-checkbox>
     <br/><br/>
     <h3>a-list:</h3>
     <a-list v-model="listItems">
@@ -36,6 +43,7 @@
 export default {
   data() {
     return {
+      tabIndex: 0,
       inputValue: 'Test',
       switchState: false,
       checkState: true,
