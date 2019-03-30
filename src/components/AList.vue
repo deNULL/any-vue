@@ -23,17 +23,23 @@
           v-else
           class="a-list__item"
           :class="itemClassList(item)">
+          
           <div class="a-list__item-content">
             {{ item.title || item }}
+            <div class="a-list__item-label" v-if="item.label">{{ item.label }}</div>
+          </div>
+          <div class="a-list__item-value" v-if="item.accessory !== 'switch' && item.value">
+            {{ item.value }}
           </div>
           <a-switch
             class="a-list__item-accessory"
-            v-if="item.accessory === 'switch'"
+            v-else-if="item.accessory === 'switch'"
             v-model="item.value"
             :value-on="'valueOn' in item ? item.valueOn : true"
             :value-off="'valueOff' in item ? item.valueOff : false"
             @input="itemInput(item, $event)"
           ></a-switch>
+          <div class="a-list__item-accessory icon-chevron" v-if="item.accessory === 'chevron'"></div>
         </div>
     </slot>
   </div>
@@ -64,7 +70,7 @@ __как__ рендерить должно определяться другим
   title
   icon / image / flag
   label
-  accessory: '>', '...', 'switch'
+  accessory: 'chevron', 'ellipsis', 'switch'
   value / badge:
 
   imageRadius: false, 'min', 'small', 'normal', 'large', 'max', exact value

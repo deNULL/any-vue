@@ -141,8 +141,24 @@ $white: #fff;
       flex: 1;
     }
 
+    &__item-label {
+      color: #909499;
+      font-size: 13px;
+      margin-top: 2px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &__item-value {
+      color: #909499;
+    }
+
     &__item-accessory.a-switch {
       margin: -6px 0;
+    }
+    &__item-accessory.icon-chevron {
+      margin: -3px 0 -3px 8px;
+      color: #c4c8cc;
     }
 
     &__group-header {
@@ -173,6 +189,13 @@ $white: #fff;
         padding: 0px;
       }
     }
+  }
+
+  /* Icons ? */
+  .icon-chevron {
+    width: 16px;
+    height: 24px;
+    background: url(../assets/ios-icon-chevron.svg);
   }
 } 
 

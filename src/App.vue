@@ -31,7 +31,9 @@ export default {
       listItems: [
         'Item 1',
         'Item 2',
-        { clickable: true, title: 'Test' },
+        { clickable: true, title: 'Test', accessory: 'chevron', value: 'Some value' },
+        { title: 'Item with a label', label: 'Label is below title in normal sized rows' },
+        { title: 'Item with value', value: 'Something' },
         [ 1, 2, 3, {
           title: 'Item with a switch',
           accessory: 'switch',
