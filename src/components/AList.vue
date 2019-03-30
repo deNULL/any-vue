@@ -3,10 +3,10 @@
     class="a-list"
     :class="classList">
     <slot
-      v-for="({ item, group, groupHeader, groupFooter }, index) in flatItems"
+      v-for="({ item, group, groupHeader, groupFooter }, index) in items"
       :name="groupHeader !== undefined ? 'group-header' :
              groupFooter !== undefined ? 'group-footer' :
-             (item && item.kind || 'normal')" v-bind:item="item">
+             (item && item.size || 'normal')" v-bind:item="item">
         <div
           v-if="groupHeader !== undefined"
           class="a-list__group-header"
@@ -23,7 +23,17 @@
           v-else
           class="a-list__item"
           :class="itemClassList(item)">
-          {{ item.title || item }}
+          <div class="a-list__item-content">
+            {{ item.title || item }}
+          </div>
+          <a-switch
+            class="a-list__item-accessory"
+            v-if="item.accessory === 'switch'"
+            v-model="item.value"
+            :value-on="'valueOn' in item ? item.valueOn : true"
+            :value-off="'valueOff' in item ? item.valueOff : true"
+            @input="itemInput(item, $event)"
+          ></a-switch>
         </div>
     </slot>
   </div>
@@ -49,7 +59,8 @@ __как__ рендерить должно определяться другим
 ]
 
 {
-  kind: 'normal', 'medium', 'large', 'info', 'any-custom-kind'
+  size: 'normal', 'medium', 'large', 'info', 'any-custom-size'
+  kind: 'normal', 'primary', 'destructive'
   title
   icon / image / flag
   label
@@ -102,12 +113,12 @@ __как__ рендерить должно определяться другим
 export default {
   name: 'AList',
   props: {
-    items: Array
+    value: Array
   },
   computed: {
-    flatItems() {
+    items() {
       let items = [];
-      for (let item of this.items) {
+      for (let item of this.value) {
         if (Array.isArray(item)) {
           items.push({
             groupHeader: true
@@ -151,13 +162,16 @@ export default {
   methods: {
     itemClassList(item) {
       return [
+        item.size && `is-${item.size}`,
+        item.kind && `is-${item.kind}`,
         item.clickable && `is-clickable`,
         item.selected && `is-selected`,
         item.active && `is-active`,
-        item.primary && `is-primary`,
-        item.destructive && `is-destructive`,
         item.disabled && `is-disabled`,
       ];
+    },
+    itemInput(item, value) { // TODO: pass event up
+      console.log('clicked', item, value);
     }
   }
 }

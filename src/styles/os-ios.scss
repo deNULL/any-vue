@@ -117,6 +117,7 @@ $white: #fff;
       position: relative;
       background: #fff;
       padding: 11px 11px 11px 12px;
+      display: flex;
 
       & + .a-list__item {
         padding-top: 12px;
@@ -134,6 +135,14 @@ $white: #fff;
       &.is-clickable {
         cursor: pointer;
       }
+    }
+
+    &__item-content {
+      flex: 1;
+    }
+
+    &__item-accessory.a-switch {
+      margin: -6px 0;
     }
 
     &__group-header {
@@ -159,7 +168,7 @@ $white: #fff;
       font-size: 14px;
       color: #909499;
       background: #fff;
-      
+
       &.is-empty {
         padding: 0px;
       }

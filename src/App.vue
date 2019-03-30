@@ -14,13 +14,7 @@
     <a-checkbox v-model="checkState" :value-on="true">Some label</a-checkbox>
     <br/><br/>
     <h3>a-list:</h3>
-    <a-list :items="[
-      'Item 1',
-      'Item 2',
-      { clickable: true, title: 'Test' },
-      [ 1, 2, 3 ],
-      { header: 'Group header', footer: 'Some footer text', group: ['A', 'B']}
-    ]">
+    <a-list v-model="listItems">
       <!--template v-slot:normal="item">
         233
       </template-->
@@ -33,7 +27,18 @@ export default {
   data() {
     return {
       switchState: false,
-      checkState: true
+      checkState: true,
+      listItems: [
+        'Item 1',
+        'Item 2',
+        { clickable: true, title: 'Test' },
+        [ 1, 2, 3, {
+          title: 'Item with a switch',
+          accessory: 'switch',
+          value: true,
+        } ],
+        { header: 'Group header', footer: 'Some footer text', group: ['A', 'B']}
+      ]
     }
   }
 }
