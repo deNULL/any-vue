@@ -10,11 +10,18 @@
 </template>
 
 <script>
+/*
+multiline
+format? (for phones, card numbers etc.)
+rich editing?
+align
+*/
 export default {
   name: 'ATextInput',
   props: {
     value: String,
     disabled: Boolean,
+    multiline: Boolean,
   },
   computed: {
     classList() {
