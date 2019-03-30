@@ -140,7 +140,7 @@ export default {
         } else
         if (typeof item === 'object' && 'group' in item) {
           items.push({
-            groupHeader: item.header,
+            groupHeader: 'header' in item ? item.header : true,
           });
           for (let subitem of item.group) {
             items.push({
@@ -149,7 +149,7 @@ export default {
             });
           }
           items.push({
-            groupFooter: item.footer,
+            groupFooter: 'footer' in item ? item.footer : true,
           });
         } else {
           items.push({
@@ -166,13 +166,13 @@ export default {
   },
   methods: {
     itemClassList(item) {
-      return [
+      return item ? [
         item.kind && `is-${item.kind}`,
         item.clickable && `is-clickable`,
         item.selected && `is-selected`,
         item.active && `is-active`,
         item.disabled && `is-disabled`,
-      ];
+      ] : [];
     },
     itemInput(item, value) { // TODO: pass event up
       console.log('clicked', item, value);

@@ -1,9 +1,11 @@
 <template>
   <any-vue id="app">
     <h3>a-button:</h3>
-    <a-button size="small" kind="commerce">Принять</a-button><br/><br/>
-    <a-button kind="commerce" disabled>Принять</a-button><br/><br/>
-    <a-button size="large" kind="commerce">Принять</a-button><br/><br/>
+    <a-button>Default</a-button><br/><br/>
+    <a-button size="small" kind="secondary">is-secondary</a-button><br/><br/>
+    <a-button kind="commerce" disabled>is-disabled</a-button><br/><br/>
+    <a-button size="large" kind="commerce">is-large</a-button><br/><br/>
+    <a-button size="large" kind="outlined">is-outlined</a-button><br/><br/>
     <h3>a-spinner:</h3>
     <a-spinner/><br/><br/>
     <a-spinner size="small"/><br/><br/>
@@ -38,14 +40,19 @@ export default {
         'Item 1',
         'Item 2',
         { clickable: true, title: 'Test', accessory: 'chevron', value: 'Some value' },
-        { title: 'Item with a label', label: 'Label is below title in normal sized rows' },
+        { title: 'Item with a label', label: 'Label is below title in non-info rows' },
         { title: 'Item with value', value: 'Something' },
         [ 1, 2, 3, {
           title: 'Item with a switch',
           accessory: 'switch',
           value: true,
         } ],
-        { header: 'Group header', footer: 'Some footer text', group: ['A', 'B']}
+        { header: 'Group header', footer: 'Some footer text', group: ['A', 'B']},
+        { header: 'Info rows', group: [
+          { label: 'Дата рождения', title: '30 января 1993', kind: 'info' },
+          { label: 'Родной город', title: 'Ереван', kind: 'info' },
+          { label: 'Место работы', title: 'ВКонтакте', kind: 'info' },
+        ] }
       ]
     }
   }

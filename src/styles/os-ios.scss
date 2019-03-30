@@ -135,6 +135,18 @@ $white: #fff;
       &.is-clickable {
         cursor: pointer;
       }
+
+      &.is-info {
+        .a-list__item-content {
+          display: flex;
+          flex-direction: column;
+        }
+        .a-list__item-label {
+          order: -1;
+          margin-top: 0px;
+          margin-bottom: 4px;
+        }
+      }
     }
 
     &__item-content {
