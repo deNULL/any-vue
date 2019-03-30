@@ -31,7 +31,7 @@
             v-if="item.accessory === 'switch'"
             v-model="item.value"
             :value-on="'valueOn' in item ? item.valueOn : true"
-            :value-off="'valueOff' in item ? item.valueOff : true"
+            :value-off="'valueOff' in item ? item.valueOff : false"
             @input="itemInput(item, $event)"
           ></a-switch>
         </div>
