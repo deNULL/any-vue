@@ -52,7 +52,11 @@ export default {
           { label: 'Дата рождения', title: '30 января 1993', kind: 'info' },
           { label: 'Родной город', title: 'Ереван', kind: 'info' },
           { label: 'Место работы', title: 'ВКонтакте', kind: 'info' },
-        ] }
+        ] },
+        { header: 'Clickable rows', group: [
+          { title: 'Do an action', kind: 'primary', clickable: true },
+          { title: 'Destroy everything', kind: 'destructive', clickable: true },
+        ]}
       ]
     }
   }

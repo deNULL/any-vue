@@ -147,6 +147,18 @@ $white: #fff;
           margin-bottom: 4px;
         }
       }
+
+      &.is-primary {
+        .a-list__item-content {
+          color: #528bcc;
+        }
+      }
+
+      &.is-destructive {
+        .a-list__item-content {
+          color: #e64646;
+        }
+      }
     }
 
     &__item-content {
