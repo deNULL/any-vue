@@ -6,6 +6,8 @@
     <a-button kind="commerce" disabled>is-disabled</a-button><br/><br/>
     <a-button size="large" kind="commerce">is-large</a-button><br/><br/>
     <a-button size="large" kind="outlined">is-outlined</a-button><br/><br/>
+    <h3>a-text-input:</h3>
+    <a-text-input v-model="inputValue"></a-text-input>
     <h3>a-spinner:</h3>
     <a-spinner/><br/><br/>
     <a-spinner size="small"/><br/><br/>
@@ -34,6 +36,7 @@
 export default {
   data() {
     return {
+      inputValue: 'Test',
       switchState: false,
       checkState: true,
       listItems: [
