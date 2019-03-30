@@ -36,6 +36,14 @@ $white: #fff;
     border-color: transparent;
   }
 
+  &.any-vue {
+    padding: 12px;
+
+    & > .a-list {
+      margin: 0 -12px;
+    }
+  }
+
   .a-button {
     text-align: center;
   }
@@ -93,6 +101,56 @@ $white: #fff;
     height: $spinner-small-size;
     animation: spin12ccw 1s steps(12, end) infinite;
     background: url(../assets/ios-spinner-background-small.svg);
+  }
+
+  .a-list {
+    background: #F7F7F7;
+    &__item {
+      position: relative;
+      background: #fff;
+      padding: 11px 11px 11px 12px;
+      & + .a-list__item {
+        padding-top: 12px;
+      }
+      & + .a-list__item:before {
+        content: '';
+        position: absolute;
+        top: 0px;
+        left: 11px;
+        right: 0px;
+        height: 1px;
+        background: #e1e2e2;
+      }
+
+      &.is-clickable {
+        cursor: pointer;
+      }
+    }
+    &__group-header {
+      margin-top: 10px;
+      padding: 15px 12px 14px 12px;
+      border-top: 1px solid #d7d8d9;
+      font-size: 13px;
+      line-height: 15px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #909499;
+      background: #fff;
+      &.is-empty {
+        padding: 0px;
+      }
+    }
+    &__group-footer {
+      margin-bottom: 10px;
+      padding: 8px 12px;
+      border-bottom: 1px solid #d7d8d9;
+      font-size: 14px;
+      color: #909499;
+      background: #fff;
+      &.is-empty {
+        padding: 0px;
+      }
+    }
   }
 } 
 

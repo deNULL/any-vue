@@ -12,12 +12,14 @@ import AButton from './components/AButton.vue';
 import ASwitch from './components/ASwitch.vue';
 import ACheckbox from './components/ACheckbox.vue';
 import ASpinner from './components/ASpinner.vue';
+import AList from './components/AList.vue';
 
 Vue.component('any-vue', AnyVue);
 Vue.component('a-button', AButton);
 Vue.component('a-switch', ASwitch);
 Vue.component('a-checkbox', ACheckbox);
 Vue.component('a-spinner', ASpinner);
+Vue.component('a-list', AList);
 
 Vue.config.productionTip = false;
 //console.log(os.darkcolor);
