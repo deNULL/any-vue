@@ -1,8 +1,8 @@
 <template>
-  <any-vue id="app" :os="['ios','android','mac','win'][tabIndex]" :base="checkState ? 'vk' : 'none'">
+  <any-vue id="app" :os="['ios','android','mac','win'][platform]" :base="checkState ? 'vk' : 'none'">
     <h3>a-tab-bar:</h3>
-    <a-tab-bar :tabs="['iOS','Android','Mac','Win']" v-model="tabIndex"></a-tab-bar>
-    <a-tab-bar :tabs="[1,2,3]" kind="secondary" v-model="tabIndex"></a-tab-bar>
+    <a-tab-bar :tabs="[1,2,3]" v-model="tabIndex"></a-tab-bar>
+    <a-tab-bar :tabs="['iOS','Android','Mac','Win']" kind="secondary" v-model="platform"></a-tab-bar>
     <div style="background: #5181b8; padding: 10px">
       <a-tab-bar :tabs="[1,2,3]" location="header" v-model="tabIndex"></a-tab-bar>
       <a-tab-bar :tabs="[1,2,3]" location="header" kind="secondary" v-model="tabIndex"></a-tab-bar>
@@ -43,6 +43,7 @@
 export default {
   data() {
     return {
+      platform: 0,
       tabIndex: 0,
       inputValue: 'Test',
       switchState: false,
