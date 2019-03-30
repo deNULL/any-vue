@@ -6,7 +6,7 @@
       v-for="({ item, group, groupHeader, groupFooter }, index) in items"
       :name="groupHeader !== undefined ? 'group-header' :
              groupFooter !== undefined ? 'group-footer' :
-             (item && item.size || 'normal')" v-bind:item="item">
+             (item && item.kind || 'normal')" v-bind:item="item">
         <div
           v-if="groupHeader !== undefined"
           class="a-list__group-header"
@@ -23,7 +23,7 @@
           v-else
           class="a-list__item"
           :class="itemClassList(item)">
-          
+
           <div class="a-list__item-content">
             {{ item.title || item }}
             <div class="a-list__item-label" v-if="item.label">{{ item.label }}</div>
@@ -65,8 +65,7 @@ __как__ рендерить должно определяться другим
 ]
 
 {
-  size: 'normal', 'medium', 'large', 'info', 'any-custom-size'
-  kind: 'normal', 'primary', 'destructive'
+  kind: 'normal', 'medium', 'large', 'info', 'primary', 'destructive', 'any-custom-kind'
   title
   icon / image / flag
   label
@@ -79,8 +78,8 @@ __как__ рендерить должно определяться другим
   selected // checked (visible only if group isSelecting)
   active // highlighted (as on tap)
   disabled 
-  primary  // makes text blue
-  destructive // makes text red
+  kind=primary  // makes text blue
+  kind=destructive // makes text red
 
   buttons: []
   actionsLeft: [],
@@ -168,7 +167,6 @@ export default {
   methods: {
     itemClassList(item) {
       return [
-        item.size && `is-${item.size}`,
         item.kind && `is-${item.kind}`,
         item.clickable && `is-clickable`,
         item.selected && `is-selected`,

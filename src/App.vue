@@ -15,8 +15,14 @@
     <br/><br/>
     <h3>a-list:</h3>
     <a-list v-model="listItems">
-      <!--template v-slot:normal="item">
-        233
+      <!--template v-slot:normal="item"> // for default cells
+        
+      </template-->
+      <!--template v-slot:custom-cell-kind="item"> // item.kind = 'custom-cell-kind'
+        
+      </template-->
+      <!-- template v-slot:group-header="item"> // for group headers
+
       </template-->
     </a-list>
   </any-vue>
