@@ -19,29 +19,16 @@
           :class="typeof groupFooter === 'string' ? '' : 'is-empty'">
           {{ typeof groupFooter === 'string' ? groupFooter : '' }}
         </div>
-        <div
+        <a-list-item
           v-else
-          class="a-list__item"
-          :class="itemClassList(item)"
-          @click="itemClick($event, item, index)">
-
-          <div class="a-list__item-content">
-            {{ item.title || item }}
-            <div class="a-list__item-label" v-if="item.label">{{ item.label }}</div>
-          </div>
-          <div class="a-list__item-value" v-if="item.accessory !== 'switch' && item.value">
-            {{ item.value }}
-          </div>
-          <a-switch
-            class="a-list__item-accessory"
-            v-else-if="item.accessory === 'switch'"
-            v-model="item.value"
-            :value-on="'valueOn' in item ? item.valueOn : true"
-            :value-off="'valueOff' in item ? item.valueOff : false"
-            @input="itemInput($event, item, index)"
-          ></a-switch>
-          <div class="a-list__item-accessory icon-chevron" v-if="item.accessory === 'chevron'"></div>
-        </div>
+          v-model="item.value"
+          :kind="item.kind"
+          :value-on="typeof item === 'object' && 'valueOn' in item ? item.valueOn : true"
+          :value-off="typeof item === 'object' && 'valueOff' in item  ? item.valueOff : false"
+          :title="item.title || item"
+          :label="item.label"
+          :accessory="item.accessory"
+          @click="itemClick($event, item, index)"/>
     </slot>
   </div>
 </template>
@@ -166,15 +153,6 @@ export default {
     }
   },
   methods: {
-    itemClassList(item) {
-      return item ? [
-        item.kind && `is-${item.kind}`,
-        typeof item == 'object' && ('clickable' in item ? item.clickable : (item.onclick || ['primary', 'destructive'].includes(item.kind))) && `is-clickable`,
-        item.selected && `is-selected`,
-        item.active && `is-active`,
-        item.disabled && `is-disabled`,
-      ] : [];
-    },
     itemInput(value, item, index) { // TODO: pass event up
       console.log('clicked', item, value);
     },

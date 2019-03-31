@@ -54,7 +54,7 @@ export default {
         { clickable: true, title: 'Test', accessory: 'chevron', value: 'Some value' },
         { title: 'Item with a label', label: 'Label is below title in non-info rows' },
         { title: 'Item with value', value: 'Something' },
-        [ 1, 2, 3, {
+        [ '1', '2', '3', {
           title: 'Item with a switch',
           accessory: 'switch',
           value: true,

@@ -13,6 +13,7 @@ import ASwitch from './components/ASwitch.vue';
 import ACheckbox from './components/ACheckbox.vue';
 import ASpinner from './components/ASpinner.vue';
 import AList from './components/AList.vue';
+import AListItem from './components/AListItem.vue';
 import ATextInput from './components/ATextInput.vue';
 import ATabBar from './components/ATabBar.vue';
 
@@ -22,6 +23,7 @@ Vue.component('a-switch', ASwitch);
 Vue.component('a-checkbox', ACheckbox);
 Vue.component('a-spinner', ASpinner);
 Vue.component('a-list', AList);
+Vue.component('a-list-item', AListItem);
 Vue.component('a-text-input', ATextInput);
 Vue.component('a-tab-bar', ATabBar);
 
