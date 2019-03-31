@@ -37,10 +37,11 @@ $white: #fff;
   }
 
   &.any-vue {
-    padding: 12px;
-    background: #F7F7F7;
-
-    & > .a-list {
+    & .any-vue__content {
+      background: #F7F7F7;
+      padding: 12px;
+    }
+    & .any-vue__content > .a-list {
       margin: 0 -12px;
     }
   }
