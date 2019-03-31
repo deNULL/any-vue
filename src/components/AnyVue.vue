@@ -3,16 +3,20 @@
     class="any-vue"
     :class="classList">
     <div
-      class="any-vue__view"
-      v-for="(view, index) in stack"
-      :class="viewClassList(view, index)"
-      @transitionend="viewTransitionEnd(view, index)">
-      <div class="any-vue__header"></div>
-      <div class="any-vue__content">
-        <slot v-if="!view"></slot>
-        <component :is="view.view" v-else></component>
+      class="any-vue__stack"
+      v-for="(stack, stackIndex) in stacks">
+      <div
+        class="any-vue__view"
+        v-for="(view, index) in stack.views"
+        :class="viewClassList(view, stack, index, stackIndex)"
+        @transitionend="viewTransitionEnd(view, stack, index, stackIndex)">
+        <div class="any-vue__header"></div>
+        <div class="any-vue__content">
+          <slot v-if="!view"></slot>
+          <component :is="view.view" v-else></component>
+        </div>
+        <div class="any-vue__footer"></div>
       </div>
-      <div class="any-vue__footer"></div>
     </div>
     <div class="any-vue__alerts"></div>
   </div>
@@ -44,7 +48,7 @@ four ways a view can be presented:
 - swap existing view(s) entirely (for tab bars);
   default transition = none
   also left-right
-  (or maybe keep second-level array of views optionally)
+  should be a top-level array of stacks
 
 - as an alert/prompt/action sheet
   similar to pt.2, but with different styling (partial screen cover, no header/footer, action buttons)
@@ -83,8 +87,11 @@ export default {
   },
   data() {
     return {
-      stack: [false],
-      activeIndex: 0,
+      stacks: [{
+        active: 0,
+        views: [false]
+      }],
+      activeStack: 0,
     }
   },
   computed: {
@@ -97,16 +104,16 @@ export default {
     }
   },
   methods: {
-    viewClassList(view, index) {
+    viewClassList(view, stack, index, stackIndex) {
       return [
-        !view.presenting && !view.dismissing && index == this.activeIndex && `is-active`,
+        !view.presenting && !view.dismissing && index == stack.active && `is-active`,
         view.presenting && `is-presenting`,
         view.dismissing && `is-dismissing`,
       ];
     },
-    viewTransitionEnd(view, index) {
+    viewTransitionEnd(view, stack, index, stackIndex) {
       if (view.dismissing) {
-        this.stack.splice(index, 1);
+        stack.views.splice(index, 1);
       }
     },
     push(view, transition) {
@@ -116,18 +123,19 @@ export default {
         transition,
         presenting: true
       };
-      this.activeIndex = this.stack.push(info) - 1;
+      this.stacks[this.activeStack].active = this.stacks[this.activeStack].views.push(info) - 1;
       setTimeout(() => {
         this.$set(info, 'presenting', false);
       }, 0);
     },
     pop() {
       console.log('pop');
-      this.$set(this.stack[this.activeIndex], 'dismissing', true);
-      this.activeIndex = this.activeIndex - 1;
+      let stack = this.stacks[this.activeStack];
+      this.$set(stack.views[stack.active], 'dismissing', true);
+      stack.active = stack.active - 1;
 
       // TODO: just pop if there's no CSS transition
-      //this.stack.pop();
+      // stack.views.pop();
     }
   },
   created() {
