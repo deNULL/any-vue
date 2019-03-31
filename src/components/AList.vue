@@ -22,7 +22,8 @@
         <div
           v-else
           class="a-list__item"
-          :class="itemClassList(item)">
+          :class="itemClassList(item)"
+          @click="itemClick($event, item, index)">
 
           <div class="a-list__item-content">
             {{ item.title || item }}
@@ -37,7 +38,7 @@
             v-model="item.value"
             :value-on="'valueOn' in item ? item.valueOn : true"
             :value-off="'valueOff' in item ? item.valueOff : false"
-            @input="itemInput(item, $event)"
+            @input="itemInput($event, item, index)"
           ></a-switch>
           <div class="a-list__item-accessory icon-chevron" v-if="item.accessory === 'chevron'"></div>
         </div>
@@ -65,7 +66,7 @@ __как__ рендерить должно определяться другим
 ]
 
 {
-  kind: 'normal', 'medium', 'large', 'info', 'primary', 'destructive', 'any-custom-kind'
+  kind: 'normal', ('medium', 'large'), 'info', 'primary', 'destructive', 'any-custom-kind'
   title
   icon / image / flag
   label
@@ -74,7 +75,7 @@ __как__ рендерить должно определяться другим
 
   imageRadius: false, 'min', 'small', 'normal', 'large', 'max', exact value
 
-  clickable
+  clickable // default = true if onclick is set or kind=primary/destructive
   selected // checked (visible only if group isSelecting)
   active // highlighted (as on tap)
   disabled 
@@ -168,14 +169,17 @@ export default {
     itemClassList(item) {
       return item ? [
         item.kind && `is-${item.kind}`,
-        item.clickable && `is-clickable`,
+        ('clickable' in item ? item.clickable : (item.onclick || ['primary', 'destructive'].includes(item.kind))) && `is-clickable`,
         item.selected && `is-selected`,
         item.active && `is-active`,
         item.disabled && `is-disabled`,
       ] : [];
     },
-    itemInput(item, value) { // TODO: pass event up
+    itemInput(value, item, index) { // TODO: pass event up
       console.log('clicked', item, value);
+    },
+    itemClick(event, item, index) {
+      item.onclick && item.onclick(event, item);
     }
   }
 }

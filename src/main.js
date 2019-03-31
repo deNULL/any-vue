@@ -25,6 +25,22 @@ Vue.component('a-list', AList);
 Vue.component('a-text-input', ATextInput);
 Vue.component('a-tab-bar', ATabBar);
 
+Vue.mixin({
+  mounted() {
+    if (this._isAnyvueRoot) {
+      this.$anyvue = this;
+    } else
+    if (this.$parent && this.$parent !== this && this.$parent.$anyvue) {
+      this.$anyvue = this.$parent.$anyvue;
+    } else
+    if (this.$children.length == 1 && this.$children[0]._isAnyvueRoot) {
+      this.$anyvue = this.$children[0];
+    } else {
+      this.$anyvue = null;
+    }
+  }
+});
+
 Vue.config.productionTip = false;
 //console.log(os.darkcolor);
 
