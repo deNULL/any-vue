@@ -169,7 +169,7 @@ export default {
     itemClassList(item) {
       return item ? [
         item.kind && `is-${item.kind}`,
-        ('clickable' in item ? item.clickable : (item.onclick || ['primary', 'destructive'].includes(item.kind))) && `is-clickable`,
+        typeof item == 'object' && ('clickable' in item ? item.clickable : (item.onclick || ['primary', 'destructive'].includes(item.kind))) && `is-clickable`,
         item.selected && `is-selected`,
         item.active && `is-active`,
         item.disabled && `is-disabled`,
