@@ -4,12 +4,10 @@
     :class="classList"
     @click="$emit('click')">
     <div class="a-list-item__content">
-      {{ title }}
+      <div class="a-list-item__title" v-if="title">{{ title }}</div>
       <div class="a-list-item__label" v-if="label">{{ label }}</div>
     </div>
-    <div class="a-list-item__value" v-if="accessory !== 'switch' && value">
-      {{ value }}
-    </div>
+    <div class="a-list-item__value" v-if="accessory !== 'switch' && value">{{ value }}</div>
     <a-switch
       class="a-list-item__accessory"
       v-else-if="accessory === 'switch'"
@@ -43,7 +41,7 @@ export default {
     clickable: {
       type: Boolean,
       default() {
-        return ['primary', 'destructive'].includes(this.kind);
+        return ['primary', 'destructive'].includes(this.kind) || ['chevron', 'ellipsis'].includes(this.accessory);
       }
     },
     active: Boolean,
