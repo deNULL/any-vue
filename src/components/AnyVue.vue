@@ -33,7 +33,7 @@ navigation thoughts
   cons:
     harder to implement, concepts require learning
 
-three ways a view can be presented:
+four ways a view can be presented:
 - pushed onto a stack as usual (adds back button to navbar by default);
   default transition = left-right
 
@@ -46,6 +46,9 @@ three ways a view can be presented:
   also left-right
   (or maybe keep second-level array of views optionally)
 
+- as an alert/prompt/action sheet
+  similar to pt.2, but with different styling (partial screen cover, no header/footer, action buttons)
+
 
 any-vue view controller should be able to configure:
 - navbar title/subtitle/controls (usually are: left buttons, right buttons, tabbar, secondary tabbar, dropdown)
@@ -56,6 +59,10 @@ any-vue view controller should be able to configure:
 - default presenting transition?
 
 allow control whether all views in stack should be kept alive (they are now)
+
+for navbar/header/tabbar/footer configuration allow passing template string from component and do something similar to what v-runtime-template does (but allow access not to parent component, but to the component navbar/tabbar was defined in)
+
+left/right offscreen panels (global, so they can be implemented just as slots)
 */
 
 export default {
