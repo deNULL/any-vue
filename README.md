@@ -5,7 +5,7 @@ UI component library for Vue 2. Designed to be as universal as possible. Inspire
 The idea is to provide as many useful components as possible without forcing a single predefined appearance. Each component (and its parts) is given semantically correct CSS classes which can be used to configure how it looks.
 
 Styling/theming is done on three levels:
-1. **System level** (aka lower level). This level is intended for copying OS look and feel. Main examples are iOS and Android, but stylesheets can be made for desktop apps (macOS/Windows).
+1. **System level** (aka lower level). This level is intended for copying OS look and feel. Main examples are iOS and Android, but stylesheets can be made for desktop apps (macOS/Windows). Note: it should be assumed that the style will correspond to user's OS, and that his OS version is the latest one. If some control is already correctly stylized by browser, no need to force specific style to it. For rare scenarios where its needed to mimic other/older OSes, version-specific stylesheets can be created (like `os-win-98`, `os-ios-1`, `os-mac-10`).
 2. **Brand/service level** (aka base level). This level is for giving your service an individual appearance. If you are building your service for external brand (like VK), you can choose to use its own style.
 3. **Theme/user level** (aka upper level). This level is for tweaking styles in accordance with user's preferences. For example, you can provide different color schemes or create a dark theme.
 
