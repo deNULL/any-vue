@@ -22,6 +22,7 @@ html, body {
     opacity: 0;
     transition: left 0.5s, opacity 0.5s;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 
     &.is-presenting, &.is-dismissing {
       left: 100%;
