@@ -149,7 +149,6 @@ $white: #fff;
     position: relative;
     background: #fff;
     padding: 11px 11px 11px 12px;
-    display: flex;
 
     & + .a-list-item {
       padding-top: 12px;
@@ -190,6 +189,10 @@ $white: #fff;
       .a-list-item__content {
         color: #e64646;
       }
+    }
+
+    &__body {
+      display: flex;
     }
 
     &__content {
