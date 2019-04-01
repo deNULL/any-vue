@@ -32,7 +32,7 @@
         <a-switch
           class="a-list-item__accessory"
           v-if="accessory === 'switch'"
-          v-model="value"
+          :value="value"
           :value-on="valueOn"
           :value-off="valueOff"
           @input="$emit('input', $event)"
