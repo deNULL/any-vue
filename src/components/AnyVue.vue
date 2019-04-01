@@ -12,13 +12,14 @@
         v-for="(view, index) in stack.views"
         :class="viewClassList(view, stack, index, stackIndex)"
         @transitionend="viewTransitionEnd(view, stack, index, stackIndex)">
-        <slot :name="tabs.length > 1 ? 'tab' + stackIndex : 'default'" v-if="!view"></slot>
+        <slot :name="tabs && tabs.length > 1 ? 'tab' + stackIndex : 'default'" v-if="!view"></slot>
         <component :is="view.view" v-else></component>
       </div>
     </div>
     <div class="any-vue__header"></div>
     <div class="any-vue__footer">
       <a-tab-bar
+        v-if="tabs"
         location="footer"
         :tabs="tabs"
         v-model="activeStack"/>
