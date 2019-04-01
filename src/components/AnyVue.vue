@@ -4,19 +4,24 @@
     :class="classList">
     <div
       class="any-vue__stack"
-      v-for="(stack, stackIndex) in stacks">
+      v-for="(stack, stackIndex) in stacks"
+      v-if="stackIndex == activeStack"
+      :class="stackIndex == activeStack ? 'is-active' : ''">
       <div
         class="any-vue__view"
         v-for="(view, index) in stack.views"
         :class="viewClassList(view, stack, index, stackIndex)"
         @transitionend="viewTransitionEnd(view, stack, index, stackIndex)">
-        <div class="any-vue__header"></div>
-        <div class="any-vue__content">
-          <slot v-if="!view"></slot>
-          <component :is="view.view" v-else></component>
-        </div>
-        <div class="any-vue__footer"></div>
+        <slot :name="tabs.length > 1 ? 'tab' + stackIndex : 'default'" v-if="!view"></slot>
+        <component :is="view.view" v-else></component>
       </div>
+    </div>
+    <div class="any-vue__header"></div>
+    <div class="any-vue__footer">
+      <a-tab-bar
+        location="footer"
+        :tabs="tabs"
+        v-model="activeStack"/>
     </div>
     <div class="any-vue__alerts"></div>
   </div>
@@ -45,7 +50,7 @@ four ways a view can be presented:
   default transition = up-down
   also flip, dissolve, curl, none
 
-- swap existing view(s) entirely (for tab bars);
+- swap current stack entirely (for tab bars);
   default transition = none
   also left-right
   should be a top-level array of stacks
@@ -84,13 +89,15 @@ export default {
       type: String,
       default: 'normal',
     },
+
+    tabs: Array,
   },
   data() {
     return {
-      stacks: [{
-        active: 0,
+      stacks: (this.tabs || [0]).map(() => ({
+        activeView: 0,
         views: [false]
-      }],
+      })),
       activeStack: 0,
     }
   },
@@ -106,7 +113,7 @@ export default {
   methods: {
     viewClassList(view, stack, index, stackIndex) {
       return [
-        !view.presenting && !view.dismissing && index == stack.active && `is-active`,
+        !view.presenting && !view.dismissing && index == stack.activeView && `is-active`,
         view.presenting && `is-presenting`,
         view.dismissing && `is-dismissing`,
       ];
@@ -116,6 +123,10 @@ export default {
         stack.views.splice(index, 1);
       }
     },
+    setActiveStack(index, transition) {
+      // TODO
+      // This is same as $anyvue.activeStack = n, but with transition
+    },
     push(view, transition) {
       console.log('push', view);
       let info = {
@@ -123,19 +134,26 @@ export default {
         transition,
         presenting: true
       };
-      this.stacks[this.activeStack].active = this.stacks[this.activeStack].views.push(info) - 1;
+      this.stacks[this.activeStack].activeView = this.stacks[this.activeStack].views.push(info) - 1;
       setTimeout(() => {
         this.$set(info, 'presenting', false);
       }, 0);
     },
-    pop() {
+    pop(transition) {
       console.log('pop');
       let stack = this.stacks[this.activeStack];
-      this.$set(stack.views[stack.active], 'dismissing', true);
-      stack.active = stack.active - 1;
+      this.$set(stack.views[stack.activeView], 'dismissing', true);
+      stack.activeView--;
 
       // TODO: just pop if there's no CSS transition
       // stack.views.pop();
+    },
+    popAll(transition) {
+      let stack = this.stacks[this.activeStack];
+      if (stack.length > 2) {
+        stack.splice(1, stack.length - 2);
+      }
+      this.pop(transition);
     }
   },
   created() {
