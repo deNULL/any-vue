@@ -3,20 +3,29 @@
     class="a-list-item"
     :class="classList"
     @click="$emit('click')">
-    <div class="a-list-item__content">
-      <div class="a-list-item__title" v-if="title">{{ title }}</div>
-      <div class="a-list-item__label" v-if="label">{{ label }}</div>
-    </div>
-    <div class="a-list-item__value" v-if="accessory !== 'switch' && value">{{ value }}</div>
-    <a-switch
-      class="a-list-item__accessory"
-      v-else-if="accessory === 'switch'"
-      v-model="value"
-      :value-on="valueOn"
-      :value-off="valueOff"
-      @input="$emit('input', $event)"
-    ></a-switch>
-    <div class="a-list-item__accessory icon-chevron" v-if="accessory === 'chevron'"></div>
+    <slot name="image">
+      <div class="a-list-item__image" v-if="imageUrl" :style="{ background: `url(${imageUrl})` }"></div>
+    </slot>
+    <slot name="content">
+      <div class="a-list-item__content">
+        <div class="a-list-item__title" v-if="title"><slot>{{ title }}</slot></div>
+        <div class="a-list-item__label" v-if="label"><slot name="label">{{ label }}</slot></div>
+      </div>
+    </slot>
+    <slot name="value">
+      <div class="a-list-item__value" v-if="accessory !== 'switch' && value">{{ value }}</div>
+    </slot>
+    <slot name="accessory">
+      <a-switch
+        class="a-list-item__accessory"
+        v-if="accessory === 'switch'"
+        v-model="value"
+        :value-on="valueOn"
+        :value-off="valueOff"
+        @input="$emit('input', $event)"
+      ></a-switch>
+      <div class="a-list-item__accessory icon-chevron" v-if="accessory === 'chevron'"></div>
+    </slot>
   </div>
 </template>
 
@@ -30,6 +39,7 @@ export default {
     },
     title: String,
     label: String,
+    imageUrl: String,
     accessory: String,
     value: null,
     valueOn: {
