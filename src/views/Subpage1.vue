@@ -10,6 +10,7 @@
     </a-template>
     <a-list :value="[{ header: 'This is a child view', group: [
         { title: 'Push even deeper', kind: 'primary', onclick: pushChild },
+        { title: 'Push deeper, and hide tabs', kind: 'primary', onclick: pushChildNoTabs },
         { title: 'Push view with tabs', kind: 'primary', onclick: pushTabs },
         { title: 'Pop back', kind: 'destructive', onclick: () => $anyvue.pop() },
       ] } ]"/>
@@ -23,6 +24,9 @@ export default {
   methods: {
     pushChild() {
       this.$anyvue.push(Subpage1);
+    },
+    pushChildNoTabs() {
+      this.$anyvue.push(Subpage1, null, true);
     },
     pushTabs() {
       this.$anyvue.push(Subtabs);

@@ -18,7 +18,8 @@
             <div
               v-for="(view, viewIndex) in stack.compactViews"
               class="a-nav-controller__view"
-              :class="viewClassList(view, viewIndex, stack, stackIndex, false)">
+              :class="viewClassList(view, viewIndex, stack, stackIndex, false)"
+              @transitionend="viewTransitionEnd(view, viewIndex, stack, stackIndex, false)">
               <slot :name="tabs.length > 1 ? `tab${stackIndex}` : 'default'" v-if="viewIndex == 0"></slot>
               <component :is="view.view" v-else></component>
             </div>
@@ -29,7 +30,8 @@
       <div
         v-for="(view, viewIndex) in fullscreenViews"
         class="a-nav-controller__view"
-        :class="viewClassList(view, viewIndex, stacks[value], value, true)">
+        :class="viewClassList(view, viewIndex, stacks[value], value, true)"
+        @transitionend="viewTransitionEnd(view, viewIndex, stacks[value], value, true)">
         <slot name="default" v-if="!tabs && viewIndex == 0"></slot>
         <component :is="view.view" v-else></component>
       </div>
@@ -67,9 +69,8 @@ export default {
       let view = stack.compactViews[index];
 
       return [
-        !view.presenting && !view.dismissing && stack.activeView <= index && `is-active`,
+        !view.presenting && stack.activeView <= index && `is-active`,
         view.presenting && `is-presenting`,
-        view.dismissing && `is-dismissing`,
       ];
     },
     fullscreenViews() {
@@ -84,15 +85,29 @@ export default {
         view.dismissing && `is-dismissing`,
       ];
     },
-    viewTransitionEnd(view, index) {
+    viewTransitionEnd(view, index, stack, stackIndex, fullscreen) {
       if (view.dismissing) {
-        this.views.splice(index, 1);
+        if (fullscreen) {
+          stack.fullscreenViews.splice(index, 1);
+        } else {
+          stack.compactViews.splice(index, 1);
+        }
       }
     },
 
-
     push(view, transition, hideTabbar) {
       let stack = this.stacks[this.value];
+      // slice extra views
+      if (this.tabs) {
+        if (stack.activeView >= stack.compactViews.length) {
+          stack.fullscreenViews.splice(stack.activeView - stack.compactViews.length + 1);
+        } else {
+          stack.compactViews.splice(stack.activeView + 1);
+        }
+      } else {
+        stack.fullscreenViews.splice(stack.activeView + 1);
+      }
+
       let fullscreen = hideTabbar || !this.tabs || stack.fullscreenViews.length > 0;
       let info = {
         view,

@@ -92,14 +92,14 @@ export default {
     }
   },
   methods: {
-    push(view, transition) {
-      this.$refs.navController.push(view, transition);
+    push(view, transition, hideTabbar) {
+      this.$refs.navController.push(view, transition, hideTabbar);
     },
-    pop(transition) {
-      this.$refs.navController.pop(transition);
+    pop() {
+      this.$refs.navController.pop();
     },
-    popAll(transition) {
-      this.$refs.navController.popAll(transition);
+    popAll() {
+      this.$refs.navController.popAll();
     }
   },
   beforeCreate() {
