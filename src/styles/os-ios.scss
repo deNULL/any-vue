@@ -36,16 +36,6 @@ $white: #fff;
     border-color: transparent;
   }
 
-  &.any-vue {
-    & .any-vue__view {
-      background: #F7F7F7;
-      padding: 12px;
-    }
-    & .any-vue__view > .a-list {
-      margin: 0 -12px;
-    }
-  }
-
   .a-button {
     text-align: center;
   }
@@ -355,6 +345,44 @@ $white: #fff;
     }
 
 
+  }
+
+  .a-tab-controller {
+    &__view {
+      background: #F7F7F7;
+    }
+  }
+
+  .a-nav-bar {
+    display: flex;
+    overflow: hidden;
+
+    &__page {
+      flex: 1 0 100%;
+      opacity: 0;
+      margin-left: -100%;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+
+      &.is-active {
+        opacity: 1;
+        margin-left: 0px;
+      }
+
+      &.is-pushing, &.is-popping {
+        margin-left: 0px;
+      }
+
+      &.is-presenting, &.is-dismissing {
+        transition: margin-left 0.5s, opacity 0.5s;
+      }
+    }
+  }
+
+  .a-nav-controller {
+    &__view {
+      background: #F7F7F7;
+    }
   }
 
   /* Icons ? */

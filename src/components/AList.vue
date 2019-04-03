@@ -2,6 +2,7 @@
   <div
     class="a-list"
     :class="classList">
+    <slot/>
     <slot
       v-for="({ item, group, groupHeader, groupFooter }, index) in items"
       :name="groupHeader !== undefined ? 'group-header' :

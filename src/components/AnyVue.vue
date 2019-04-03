@@ -2,7 +2,22 @@
   <div
     class="any-vue"
     :class="classList">
-    <div
+    <!-- a-nav-controller will push its a-nav-bar here -->
+    <a-template-renderer name="header" class="any-vue__header"/>
+
+    <a-tab-controller bar-location="footer" :tabs="tabs" v-model="activeStack" ref="tabController">
+      <template v-for="(stack, stackIndex) in stacks" v-slot:[`tab${stackIndex}`]>
+        <a-nav-controller :ref="`navController${stackIndex}`">
+          <slot :name="tabs && tabs.length > 1 ? 'tab' + stackIndex : 'default'"></slot>
+        </a-nav-controller>
+      </template>
+    </a-tab-controller>
+
+    <!-- a-tab-controller with bar-location="footer" will push its a-tab-bar here -->
+    <a-template-renderer name="footer" class="any-vue__footer"/>
+
+
+    <!--div
       class="any-vue__stack"
       v-for="(stack, stackIndex) in stacks"
       v-if="stackIndex == activeStack"
@@ -13,17 +28,17 @@
         :class="viewClassList(view, stack, index, stackIndex)"
         @transitionend="viewTransitionEnd(view, stack, index, stackIndex)">
         <slot :name="tabs && tabs.length > 1 ? 'tab' + stackIndex : 'default'" v-if="!view"></slot>
-        <component :is="view.view" v-else></component>
+        <component :is="view.view" :ref="`stack${stackIndex}-view${index}`" v-else></component>
       </div>
     </div>
-    <div class="any-vue__header"></div>
+    <a-template-renderer class="any-vue__header" name="title"/>
     <div class="any-vue__footer">
       <a-tab-bar
         v-if="tabs"
         location="footer"
         :tabs="tabs"
         v-model="activeStack"/>
-    </div>
+    </div-->
     <div class="any-vue__alerts"></div>
   </div>
 </template>
@@ -109,6 +124,11 @@ export default {
         this.base && `base-${this.base}`,
         this.theme && `theme-${this.theme}`,
       ];
+    },
+    activeView() {
+      let stack = this.stacks[this.activeStack];
+      let id = `stack${this.activeStack}-view${stack.activeView}`;
+      return this.$refs[id] ? this.$refs[id][0] : null;
     }
   },
   methods: {
@@ -124,40 +144,25 @@ export default {
         stack.views.splice(index, 1);
       }
     },
+    getTemplate(name) {
+
+      return this.activeView ? this.activeView.getTemplate(name) : null;
+    },
     setActiveStack(index, transition) {
       // TODO
       // This is same as $anyvue.activeStack = n, but with transition
     },
     push(view, transition) {
-      console.log('push', view);
-      let info = {
-        view,
-        transition,
-        presenting: true
-      };
-      this.stacks[this.activeStack].activeView = this.stacks[this.activeStack].views.push(info) - 1;
-      setTimeout(() => {
-        this.$set(info, 'presenting', false);
-      }, 0);
+      this.$refs[`navController${this.activeStack}`][0].push(view, transition);
     },
     pop(transition) {
-      console.log('pop');
-      let stack = this.stacks[this.activeStack];
-      this.$set(stack.views[stack.activeView], 'dismissing', true);
-      stack.activeView--;
-
-      // TODO: just pop if there's no CSS transition
-      // stack.views.pop();
+      this.$refs[`navController${this.activeStack}`][0].pop(transition);
     },
     popAll(transition) {
-      let stack = this.stacks[this.activeStack];
-      if (stack.length > 2) {
-        stack.splice(1, stack.length - 2);
-      }
-      this.pop(transition);
+      this.$refs[`navController${this.activeStack}`][0].popAll(transition);
     }
   },
-  created() {
+  beforeCreate() {
     this._isAnyvueRoot = true;
   }
 }

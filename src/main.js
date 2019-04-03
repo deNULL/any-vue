@@ -16,6 +16,12 @@ import AList from './components/AList.vue';
 import AListItem from './components/AListItem.vue';
 import ATextInput from './components/ATextInput.vue';
 import ATabBar from './components/ATabBar.vue';
+import ATabController from './components/ATabController.vue';
+import ANavBar from './components/ANavBar.vue';
+import ANavController from './components/ANavController.vue';
+
+import ATemplate from './components/ATemplate.vue';
+import ATemplateRenderer from './components/ATemplateRenderer.vue';
 
 Vue.component('any-vue', AnyVue);
 Vue.component('a-button', AButton);
@@ -26,19 +32,36 @@ Vue.component('a-list', AList);
 Vue.component('a-list-item', AListItem);
 Vue.component('a-text-input', ATextInput);
 Vue.component('a-tab-bar', ATabBar);
+Vue.component('a-tab-controller', ATabController);
+Vue.component('a-nav-bar', ANavBar);
+Vue.component('a-nav-controller', ANavController);
+
+Vue.component('a-template', ATemplate);
+Vue.component('a-template-renderer', ATemplateRenderer);
+
+Vue.prototype.getTemplate = function(name) {
+  return this.$templates[name];
+}
 
 Vue.mixin({
+  created() {
+    this.$templates = {};
+  },
   mounted() {
-    if (this._isAnyvueRoot) {
-      this.$anyvue = this;
-    } else
-    if (this.$parent && this.$parent !== this && this.$parent.$anyvue) {
-      this.$anyvue = this.$parent.$anyvue;
+    let view = this;
+    while (view && !view._isAnyvueRoot && !view.$anyvue && view.$parent && view.$parent !== view) {
+      view = view.$parent;
+    }
+    if (view._isAnyvueRoot || view.$anyvue) {
+      this.$anyvue = view._isAnyvueRoot ? view : view.$anyvue;
+      view = this.$parent;
+      while (view && !view._isAnyvueRoot && !view.$anyvue && view.$parent && view.$parent !== view) {
+        view.$anyvue = this.$anyvue;
+        view = view.$parent;
+      }
     } else
     if (this.$children.length == 1 && this.$children[0]._isAnyvueRoot) {
       this.$anyvue = this.$children[0];
-    } else {
-      this.$anyvue = null;
     }
   }
 });

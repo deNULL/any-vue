@@ -89,6 +89,12 @@ $color-checkbox-gray: #C4C8CC;
     }
   }
 
+
+  .a-nav-bar {
+    background: #528bcc;
+    color: #fff;
+  }
+
   &.os-ios .a-switch:before {
     background: url(../assets/vk-ios-switch-background-on.svg);
   }

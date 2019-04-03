@@ -1,5 +1,6 @@
 <template>
   <any-vue :tabs="[1, 2, 3]">
+
     <template v-slot:tab0>
       <a-list :value="[[
         { title: 'Push child view', clickable: true, kind: 'primary', onclick: pushChild },
@@ -21,6 +22,7 @@ import Subpage1 from '../views/Subpage1.vue'
 export default {
   methods: {
     pushChild() {
+      console.log('click', this.$anyvue);
       this.$anyvue.push(Subpage1);
     }
   }
