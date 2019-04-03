@@ -2,11 +2,9 @@
   <div
     class="a-nav-bar"
     :class="classList">
-    <div v-for="(page, index) in value.length < oldValue.length ? oldValue : value"  class="a-nav-bar__page" :class="pageClassList(page, index)" @transitionend="pageTransitionEnd(page, index)">
-      <slot :name="`title${index}`">
-        Title
-      </slot>
-    </div>
+    <slot name="title">
+      Title
+    </slot>
   </div>
 </template>
 
@@ -18,7 +16,7 @@ export default {
   },
   data() {
     return {
-      oldValue: this.value.slice(0),
+      oldValue: (this.value || []).slice(0),
       anim: false,
     }
   },

@@ -25,7 +25,7 @@
     <a-switch v-model="switchState" value-on="A" value-off="B"/><br/><br/>
     <br/><br/>
     <h3>a-list:</h3>
-    <a-list v-model="listItems">
+    <a-list v-model="listItems" >
       <!--template v-slot:normal="item"> // for default cells
         
       </template-->

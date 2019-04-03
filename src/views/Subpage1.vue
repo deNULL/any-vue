@@ -1,5 +1,10 @@
 <template>
   <div>
+    <a-nav-bar>
+      <template v-slot:title>
+        111
+      </template>
+    </a-nav-bar>
     <a-template name="title">
       That's a subpage
     </a-template>

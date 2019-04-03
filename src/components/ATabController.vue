@@ -2,6 +2,7 @@
   <div
     class="a-tab-controller"
     :class="classList">
+
     <a-tab-bar
       class="a-tab-controller__bar" 
       v-if="barLocation == 'header' || barLocation == 'normal'"
@@ -9,6 +10,7 @@
       :tabs="tabs" 
       :value="value"
       @input="$emit('input', $event)"></a-tab-bar>
+
     <div class="a-tab-controller__stack">
       <div
         class="a-tab-controller__view"
@@ -17,6 +19,7 @@
         <slot :name="`tab${index}`"></slot>
       </div>
     </div>
+    
     <a-tab-bar 
       class="a-tab-controller__bar" 
       location="footer" 

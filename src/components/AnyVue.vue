@@ -2,43 +2,12 @@
   <div
     class="any-vue"
     :class="classList">
-    <!-- a-nav-controller will push its a-nav-bar here -->
-    <a-template-renderer name="header" class="any-vue__header"/>
-
-    <a-tab-controller bar-location="footer" :tabs="tabs" v-model="activeStack" ref="tabController">
-      <template v-for="(stack, stackIndex) in stacks" v-slot:[`tab${stackIndex}`]>
-        <a-nav-controller :ref="`navController${stackIndex}`">
-          <slot :name="tabs && tabs.length > 1 ? 'tab' + stackIndex : 'default'"></slot>
-        </a-nav-controller>
+    <a-nav-controller :tabs="tabs" v-model="activeTab" ref="navController">
+      <!-- pass down tab templates -->
+      <template v-for="(tab, index) in (tabs || [false])" v-slot:[tabs?`tab${index}`:`default`]>
+        <slot :name="tabs ? `tab${index}` : `default`"></slot>
       </template>
-    </a-tab-controller>
-
-    <!-- a-tab-controller with bar-location="footer" will push its a-tab-bar here -->
-    <a-template-renderer name="footer" class="any-vue__footer"/>
-
-
-    <!--div
-      class="any-vue__stack"
-      v-for="(stack, stackIndex) in stacks"
-      v-if="stackIndex == activeStack"
-      :class="stackIndex == activeStack ? 'is-active' : ''">
-      <div
-        class="any-vue__view"
-        v-for="(view, index) in stack.views"
-        :class="viewClassList(view, stack, index, stackIndex)"
-        @transitionend="viewTransitionEnd(view, stack, index, stackIndex)">
-        <slot :name="tabs && tabs.length > 1 ? 'tab' + stackIndex : 'default'" v-if="!view"></slot>
-        <component :is="view.view" :ref="`stack${stackIndex}-view${index}`" v-else></component>
-      </div>
-    </div>
-    <a-template-renderer class="any-vue__header" name="title"/>
-    <div class="any-vue__footer">
-      <a-tab-bar
-        v-if="tabs"
-        location="footer"
-        :tabs="tabs"
-        v-model="activeStack"/>
-    </div-->
+    </a-nav-controller>
     <div class="any-vue__alerts"></div>
   </div>
 </template>
@@ -110,11 +79,7 @@ export default {
   },
   data() {
     return {
-      stacks: (this.tabs || [0]).map(() => ({
-        activeView: 0,
-        views: [false]
-      })),
-      activeStack: 0,
+      activeTab: 0,
     }
   },
   computed: {
@@ -124,42 +89,17 @@ export default {
         this.base && `base-${this.base}`,
         this.theme && `theme-${this.theme}`,
       ];
-    },
-    activeView() {
-      let stack = this.stacks[this.activeStack];
-      let id = `stack${this.activeStack}-view${stack.activeView}`;
-      return this.$refs[id] ? this.$refs[id][0] : null;
     }
   },
   methods: {
-    viewClassList(view, stack, index, stackIndex) {
-      return [
-        !view.presenting && !view.dismissing && index == stack.activeView && `is-active`,
-        view.presenting && `is-presenting`,
-        view.dismissing && `is-dismissing`,
-      ];
-    },
-    viewTransitionEnd(view, stack, index, stackIndex) {
-      if (view.dismissing) {
-        stack.views.splice(index, 1);
-      }
-    },
-    getTemplate(name) {
-
-      return this.activeView ? this.activeView.getTemplate(name) : null;
-    },
-    setActiveStack(index, transition) {
-      // TODO
-      // This is same as $anyvue.activeStack = n, but with transition
-    },
     push(view, transition) {
-      this.$refs[`navController${this.activeStack}`][0].push(view, transition);
+      this.$refs.navController.push(view, transition);
     },
     pop(transition) {
-      this.$refs[`navController${this.activeStack}`][0].pop(transition);
+      this.$refs.navController.pop(transition);
     },
     popAll(transition) {
-      this.$refs[`navController${this.activeStack}`][0].popAll(transition);
+      this.$refs.navController.popAll(transition);
     }
   },
   beforeCreate() {
