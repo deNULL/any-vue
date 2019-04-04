@@ -1,10 +1,5 @@
 <template>
-  <div>
-    <a-nav-bar>
-      <template v-slot:title>
-        111
-      </template>
-    </a-nav-bar>
+  <a-view :title="title">
     <a-template name="title">
       That's a subpage
     </a-template>
@@ -14,13 +9,18 @@
         { title: 'Push view with tabs', kind: 'primary', onclick: pushTabs },
         { title: 'Pop back', kind: 'destructive', onclick: () => $anyvue.pop() },
       ] } ]"/>
-  </div>
+  </a-view>
 </template>
 <script>
 import Subpage1 from '../views/Subpage1.vue'
 import Subtabs from '../views/Subtabs.vue'
 
 export default {
+  data() {
+    return {
+      title: 'Random ' + Math.floor(Math.random() * 100)
+    }
+  },
   methods: {
     pushChild() {
       this.$anyvue.push(Subpage1);

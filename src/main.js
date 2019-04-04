@@ -19,6 +19,7 @@ import ATabBar from './components/ATabBar.vue';
 import ATabController from './components/ATabController.vue';
 import ANavBar from './components/ANavBar.vue';
 import ANavController from './components/ANavController.vue';
+import AView from './components/AView.vue';
 
 import ATemplate from './components/ATemplate.vue';
 import ATemplateRenderer from './components/ATemplateRenderer.vue';
@@ -35,6 +36,7 @@ Vue.component('a-tab-bar', ATabBar);
 Vue.component('a-tab-controller', ATabController);
 Vue.component('a-nav-bar', ANavBar);
 Vue.component('a-nav-controller', ANavController);
+Vue.component('a-view', AView);
 
 Vue.component('a-template', ATemplate);
 Vue.component('a-template-renderer', ATemplateRenderer);
@@ -47,7 +49,7 @@ Vue.mixin({
   created() {
     this.$templates = {};
   },
-  mounted() {
+  beforeMount() {
     let view = this;
     while (view && !view._isAnyvueRoot && !view.$anyvue && view.$parent && view.$parent !== view) {
       view = view.$parent;

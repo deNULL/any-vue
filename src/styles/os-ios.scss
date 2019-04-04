@@ -349,11 +349,11 @@ $white: #fff;
 
   .a-tab-controller {
     &__view {
-      background: #F7F7F7;
     }
   }
 
   .a-nav-bar {
+    position: relative;
     display: flex;
     overflow: hidden;
 
@@ -381,7 +381,141 @@ $white: #fff;
 
   .a-nav-controller {
     &__view {
+      position: absolute;
+      top: 0;
+      left: -50%;
+      width: 100%;
+      bottom: 0;
+      opacity: 0;
+      overflow: visible;
+      -webkit-overflow-scrolling: touch;
+
+      &.is-presenting {
+        left: calc((1 - var(--nav-progress)) * 100%);
+        opacity: 1;
+
+        & .a-nav-bar {
+          left: calc((1 - var(--nav-progress)) * -100%);
+          opacity: var(--nav-progress); // 0 → 1
+
+          &__back-label {
+            left: calc(var(--nav-progress) * 24px); // 24px → 0px
+            margin-left: calc((1 - var(--nav-progress)) * 50%); // 50% → 0%
+            transform: translateX(calc((1 - var(--nav-progress)) * -50%)); // -50% → 0%
+          }
+
+          &__center {
+            transform: translateX(calc((1 - var(--nav-progress)) * 50%));
+          }
+        }
+      }
+      &.is-showing {
+        left: calc((1 - var(--nav-progress)) * -50%);
+        opacity: var(--nav-progress);
+
+        & .a-nav-bar {
+          left: calc((1 - var(--nav-progress)) * 50%);
+        }
+      }
+      &.is-dismissing {
+        left: calc(var(--nav-progress) * 100%);
+        opacity: 1;
+
+        & .a-nav-bar {
+          left: calc(var(--nav-progress) * -100%);
+          opacity: calc(1 - var(--nav-progress)); // 0 → 1
+
+          &__back-label {
+            left: calc((1 - var(--nav-progress)) * 24px); // 24px → 0px
+            margin-left: calc(var(--nav-progress) * 50%); // 50% → 0%
+            transform: translateX(calc(var(--nav-progress) * -50%)); // -50% → 0%
+          }
+
+          &__center {
+            transform: translateX(calc(var(--nav-progress) * 50%));
+          }
+        }
+      }
+      &.is-hiding {
+        left: calc(var(--nav-progress) * -50%);
+        opacity: calc(1 - var(--nav-progress));
+
+        & .a-nav-bar {
+          left: calc(var(--nav-progress) * 50%);
+        }
+      }
+      &.is-active {
+        left: 0;
+        opacity: 1;
+      }
+    }
+  }
+
+  .a-nav-bar {
+    display: flex;
+    height: 44px;
+
+    &__back-button {
+      width: 24px;
+      height: 44px;
+      background: url(../assets/ios-icon-back.svg);
+      background-repeat: no-repeat;
+      background-position: right center;
+      background-size: 20px 24px;
+      cursor: pointer;
+      z-index: 1;
+    }
+
+    &__back-label {
+      position: absolute;
+      left: 24px;
+      line-height: 44px;
+      font-family: SFProText-Semibold, -apple-system, Helvetica Neue, Arial;
+      font-weight: 500;
+      font-size: 17px;
+      cursor: pointer;
+      z-index: 1;
+      padding: 0px 6px;
+    }
+
+    &__left {
+      flex: 1;
+    }
+
+    &__center {
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      top: 0px;
+      bottom: 0px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 0;
+    }
+
+    &__title {
+      font-family: SFProText-Semibold, -apple-system, Helvetica Neue, Arial;
+      font-weight: 500;
+      font-size: 17px;
+    }
+
+    &__right {
+      flex: 1;
+    }
+  }
+
+  .a-view {
+    &__header {
+      z-index: 1;
+    }
+    &__footer {
+      z-index: 1;
+    }
+    &__body {
       background: #F7F7F7;
+      box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.12);
     }
   }
 

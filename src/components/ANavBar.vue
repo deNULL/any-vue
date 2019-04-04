@@ -2,9 +2,30 @@
   <div
     class="a-nav-bar"
     :class="classList">
-    <slot name="title">
-      Title
-    </slot>
+    <div class="a-nav-bar__back-button" v-if="showBackButton" @click="$anyvue.pop()"></div>
+    <div class="a-nav-bar__back-label" v-if="showBackButton && backLabel" @click="$anyvue.pop()">
+      {{ backLabel }}
+    </div>
+    <div class="a-nav-bar__left" v-if="leftItems || $slots.left">
+      <slot name="left"></slot>
+    </div>
+    <div class="a-nav-bar__center">
+      <slot name="center">
+        <div class="a-nav-bar__title" v-if="!tabs">
+          <slot name="title">{{ title }}</slot>
+        </div>
+        <div class="a-nav-bar__subtitle" v-if="!tabs && subtitle">
+          <slot name="subtitle">{{ subtitle }}</slot>
+        </div>
+
+        <a-tab-bar location="header" kind="primary" v-if="tabs"></a-tab-bar>
+
+        <!--a-dropdown></a-dropdown-->
+      </slot>
+    </div>
+    <div class="a-nav-bar__right" v-if="rightItems || $slots.right">
+      <slot name="right"></slot>
+    </div>
   </div>
 </template>
 
@@ -12,41 +33,27 @@
 export default {
   name: 'ANavBar',
   props: {
-    value: Array,
+    title: String,
+    subtitle: String,
+    tabs: Array,
+
+    showBackButton: Boolean,
+    backLabel: String,
+
+    leftItems: Array,
+    rightItems: Array,
   },
   data() {
     return {
-      oldValue: (this.value || []).slice(0),
-      anim: false,
-    }
-  },
-  watch: {
-    value(value, oldValue) {
-      this.$nextTick(() => {
-        this.anim = true;
-      });
     }
   },
   computed: {
     classList() {
       return [
       ];
-    }
+    },
   },
   methods: {
-    pageClassList(page, index) {
-      return [
-        index == (this.anim ? this.value : this.oldValue).length - 1 && `is-active`,
-        this.anim && index == this.value.length - 1 && index != this.oldValue.length - 1 && `is-presenting`,
-        this.anim && index == this.oldValue.length - 1 && index != this.value.length - 1 && `is-dismissing`,
-        this.anim && index == this.oldValue.length - 1 && this.value.length < this.oldValue.length && `is-popping`,
-        !this.anim && index == this.value.length - 1 && this.value.length > this.oldValue.length && `is-pushing`,
-      ];
-    },
-    pageTransitionEnd(page, index) {
-      this.oldValue = this.value;
-      this.anim = false;
-    }
   }
 }
 </script>

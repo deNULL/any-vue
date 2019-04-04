@@ -19,9 +19,15 @@
               v-for="(view, viewIndex) in stack.compactViews"
               class="a-nav-controller__view"
               :class="viewClassList(view, viewIndex, stack, stackIndex, false)"
-              @transitionend="viewTransitionEnd(view, viewIndex, stack, stackIndex, false)">
-              <slot :name="tabs.length > 1 ? `tab${stackIndex}` : 'default'" v-if="viewIndex == 0"></slot>
-              <component :is="view.view" v-else></component>
+              :style="{ '--nav-progress': view.animProgress }"
+              @transitionend="viewTransitionEnd(view, viewIndex, stack, stackIndex, false)"
+              :ref="`stack${stackIndex}-view${viewIndex}`">
+              <slot 
+                :name="tabs.length > 1 ? `tab${stackIndex}` : 'default'" 
+                v-if="viewIndex == 0"></slot>
+              <component
+                :is="view.view"
+                v-else></component>
             </div>
           </div>
         </template>
@@ -31,9 +37,15 @@
         v-for="(view, viewIndex) in fullscreenViews"
         class="a-nav-controller__view"
         :class="viewClassList(view, viewIndex, stacks[value], value, true)"
-        @transitionend="viewTransitionEnd(view, viewIndex, stacks[value], value, true)">
-        <slot name="default" v-if="!tabs && viewIndex == 0"></slot>
-        <component :is="view.view" v-else></component>
+        :style="{ '--nav-progress': view.animProgress }"
+        @transitionend="viewTransitionEnd(view, viewIndex, stacks[value], value, true)"
+        :ref="`stack${value}-view${stacks[value].compactViews.length + viewIndex}`">
+        <slot
+          name="default"
+          v-if="!tabs && viewIndex == 0"></slot>
+        <component
+          :is="view.view"
+          v-else></component>
       </div>
     </div>
   </div>
@@ -47,42 +59,70 @@ export default {
     value: {
       type: Number,
       default: 0,
+    },
+    transitionDuration: {
+      type: Number,
+      default: 300,
     }
   },
   data() {
     return { /* Note: this makes tabs not reactive */
       stacks: (this.tabs || [false]).map(() => ({
         activeView: 0,
-        compactViews: this.tabs ? [false] : [],
-        fullscreenViews: this.tabs ? [] : [false],
+        compactViews: this.tabs ? [{}] : [],
+        fullscreenViews: this.tabs ? [] : [{}],
       })),
+      activeAnimations: [],
     }
   },
+  // states: 'presenting', 'dismissing', 'hiding', 'showing'
   computed: {
     classList() {
       return [
       ];
     },
+    activeStack() {
+      return this.stacks[this.value];
+    },
+    activeView() {
+      let stack = this.activeStack;
+      if (!this.tabs || stack.activeView >= stack.compactViews.length) {
+        return stack.fullscreenViews[stack.activeView - stack.compactViews.length];
+      } else {
+        return stack.compactViews[stack.activeView];
+      }
+    },
+    previousComponent() {
+      let stack = this.activeStack;
+      return this.getView(this.value, stack.activeView - 1);
+    },
+    activeComponent() {
+      let stack = this.activeStack;
+      return this.getView(this.value, stack.activeView);
+    },
+    activeStackSize() {
+      let stack = this.activeStack;
+      return stack.activeView + 1;
+    },
     stackClassList() {
-      let stack = this.stacks[this.value];
+      let stack = this.activeStack;
       let index = stack.compactViews.length - 1;
       let view = stack.compactViews[index];
 
       return [
-        !view.presenting && stack.activeView <= index && `is-active`,
-        view.presenting && `is-presenting`,
+        !['hiding', 'showing'].includes(view.animState) && stack.activeView <= index && `is-active`,
+        ['hiding', 'showing'].includes(view.animState) && `is-${view.animState}`,
       ];
     },
     fullscreenViews() {
-      return this.stacks[this.value].fullscreenViews;
+      return this.activeStack.fullscreenViews;
     }
   },
   methods: {
     viewClassList(view, index, stack, stackIndex, fullscreen) {
       return [
-        !view.presenting && !view.dismissing && index + (fullscreen ? stack.compactViews.length : 0) == stack.activeView && `is-active`,
-        view.presenting && `is-presenting`,
-        view.dismissing && `is-dismissing`,
+        !view.animState && index + (fullscreen ? stack.compactViews.length : 0) == stack.activeView && `is-active`,
+        view.animState && `is-${view.animState}`,
       ];
     },
     viewTransitionEnd(view, index, stack, stackIndex, fullscreen) {
@@ -95,8 +135,79 @@ export default {
       }
     },
 
+    findPreceding(view) {
+      for (let i = 0; i < this.stacks.length; i++) {
+        for (let j = 1; j < this.stacks[i].compactViews.length; j++) {
+          let comp = this.getView(i, j);
+          if (comp === view) {
+            return this.getView(i, j - 1);
+          }
+        }
+
+        for (let j = 0; j < this.stacks[i].fullscreenViews.length; j++) {
+          let index = this.stacks[i].compactViews.length + j;
+          let comp = this.getView(i, index);
+          if (comp === view && index - 1 >= 0) {
+            return this.getView(i, index - 1);
+          }
+        }
+      }
+
+      return null;
+    },
+    getView(stackIndex, viewIndex) {
+      let ref = this.$refs[`stack${stackIndex}-view${viewIndex}`];
+      // TODO: maybe think about better way
+      if (!ref || !ref.length || !ref[0] || !ref[0].children || !ref[0].children[0] || !ref[0].children[0].__vue__) {
+        return null;
+      }
+      let comp = ref[0].children[0].__vue__;
+      if (comp._isAnyvueView) {
+        return comp;
+      }
+      if (comp.$children.length === 1 && comp.$children[0]._isAnyvueView) {
+        return comp.$children[0];
+      }
+      return null;
+    },
+
+    animate(view, stack, state, time) {
+      let startTime = Date.now();
+      let step = () => {
+        let progress = (Date.now() - startTime) / time;
+        if (progress >= 1) {
+          this.$set(view, 'animState', false);
+          this.$set(view, 'animProgress', null);
+          if (state === 'dismissing') {
+            let index = stack.compactViews.indexOf(view);
+            if (index > -1) {
+              stack.compactViews.splice(index, 1);
+            } else {
+              index = stack.fullscreenViews.indexOf(view);
+              if (index > -1) {
+                stack.fullscreenViews.splice(index, 1);
+              }
+            }
+          }
+        } else {
+          this.$set(view, 'animProgress', progress);
+          requestAnimationFrame(step);
+        }
+      }
+      this.$set(view, 'animState', state);
+      // Time stopping
+      /*
+      if (['dismissing', 'showing'].includes(state)) {
+        this.$set(view, 'animProgress', 0.85);
+      } else {
+      */
+        requestAnimationFrame(step);
+      //}
+    },
+
     push(view, transition, hideTabbar) {
-      let stack = this.stacks[this.value];
+      let stack = this.activeStack;
+
       // slice extra views
       if (this.tabs) {
         if (stack.activeView >= stack.compactViews.length) {
@@ -112,33 +223,31 @@ export default {
       let info = {
         view,
         transition,
-        presenting: true
       };
       console.log('push', info);
+      this.animate(this.activeView, stack, 'hiding', this.transitionDuration);
+      this.animate(info, stack, 'presenting', this.transitionDuration);
       if (fullscreen) {
         stack.activeView = stack.compactViews.length + stack.fullscreenViews.push(info) - 1;
       } else {
         stack.activeView = stack.compactViews.push(info) - 1;
       }
-      setTimeout(() => {
-        this.$set(info, 'presenting', false);
-      }, 0);
     },
     pop() {
+      let stack, view;
       console.log('pop');
-      let stack = this.stacks[this.value];
+      stack = this.activeStack;
       if (!this.tabs || stack.activeView >= stack.compactViews.length) {
-        this.$set(stack.fullscreenViews[stack.activeView - stack.compactViews.length], 'dismissing', true);
+        view = stack.fullscreenViews[stack.activeView - stack.compactViews.length];
       } else {
-        this.$set(stack.compactViews[stack.activeView], 'dismissing', true);
+        view = stack.compactViews[stack.activeView];
       }
+      this.animate(view, stack, 'dismissing', this.transitionDuration);
       stack.activeView--;
-
-      // TODO: just pop if there's no CSS transition
-      // stack.views.pop();
+      this.animate(this.activeView, stack, 'showing', this.transitionDuration);
     },
     popAll() {
-      let stack = this.stacks[this.value];
+      let stack = this.activeStack;
       if (stack.activeView > 1) {
         if (this.tabs) {
           if (stack.activeView >= stack.compactViews.length) {

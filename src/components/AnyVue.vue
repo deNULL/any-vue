@@ -2,7 +2,11 @@
   <div
     class="any-vue"
     :class="classList">
-    <a-nav-controller :tabs="tabs" v-model="activeTab" ref="navController">
+    <a-nav-controller
+      :tabs="tabs" 
+      :transition-duration="transitionDuration" 
+      v-model="activeTab" 
+      ref="navController">
       <!-- pass down tab templates -->
       <template v-for="(tab, index) in (tabs || [false])" v-slot:[tabs?`tab${index}`:`default`]>
         <slot :name="tabs ? `tab${index}` : `default`"></slot>
@@ -76,10 +80,15 @@ export default {
     },
 
     tabs: Array,
+    transitionDuration: {
+      type: Number,
+      default: 300,
+    }
   },
   data() {
     return {
       activeTab: 0,
+      isMounted: false,
     }
   },
   computed: {
@@ -89,9 +98,24 @@ export default {
         this.base && `base-${this.base}`,
         this.theme && `theme-${this.theme}`,
       ];
+    },
+    previousView() {
+      this.isMounted;
+      return this.$refs.navController && this.$refs.navController.previousComponent;
+    },
+    activeView() {
+      this.isMounted;
+      return this.$refs.navController && this.$refs.navController.activeComponent;
+    },
+    activeStackSize() {
+      this.isMounted;
+      return this.$refs.navController ? this.$refs.navController.activeStackSize : 1;
     }
   },
   methods: {
+    findPreceding(view) {
+      return this.$refs.navController && this.$refs.navController.findPreceding(view);
+    },
     push(view, transition, hideTabbar) {
       this.$refs.navController.push(view, transition, hideTabbar);
     },
@@ -104,6 +128,9 @@ export default {
   },
   beforeCreate() {
     this._isAnyvueRoot = true;
+  },
+  mounted() {
+    this.isMounted = true;
   }
 }
 </script>

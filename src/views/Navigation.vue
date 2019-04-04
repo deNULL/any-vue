@@ -2,14 +2,11 @@
   <any-vue :tabs="[1, 2, 3]">
 
     <template v-slot:tab0>
-      <a-nav-bar>
-        <template v-slot:title>
-          This is a list
-        </template>
-      </a-nav-bar>
-      <a-list :value="[[
-        { title: 'Push child view', clickable: true, kind: 'primary', onclick: pushChild },
-      ]]"/>
+      <a-view title="This is a list">
+        <a-list :value="[[
+          { title: 'Push child view', clickable: true, kind: 'primary', onclick: pushChild },
+        ]]"/>
+      </a-view>
     </template>
     <template v-slot:tab1>
       Second tab content
