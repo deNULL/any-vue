@@ -1,16 +1,16 @@
 <template>
-  <div>
-    <a-template name="title">
-      Demo
+  <a-view>
+    <template v-slot:title>
+      <!--Demo-->
       <!-- or -->
       <a-tab-bar :tabs="['A', 'B', 'C']" v-model="activeTab" location="header"/>
-    </a-template>
-    <a-template name="header">
+    </template>
+    <template v-slot:header>
       <a-tab-bar :tabs="['A', 'B', 'C']" v-model="activeTab" location="header" kind="secondary"/>
-    </a-template>
-    <a-template name="footer">
+    </template>
+    <template v-slot:footer>
       <a-tab-bar :tabs="[1,2]" location="footer" kind="secondary"/>
-    </a-template>
+    </template>
 
     <div v-if="activeTab == 0">
       Tab 1
@@ -24,7 +24,7 @@
 
     <br/><br/>
     <a-button @click="$anyvue.pop()">Pop back</a-button>
-  </div>
+  </a-view>
 </template>
 <script>
 export default {

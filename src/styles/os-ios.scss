@@ -338,6 +338,9 @@ $white: #fff;
     }
 
     &.is-footer.is-primary {
+      background: #fff;
+      border-top: 1px solid #d7d8d9;
+      height: 48px;
       .a-tab-bar__tab {
         flex: 1;
         font-size: 12px;
@@ -516,6 +519,11 @@ $white: #fff;
     &__body {
       background: #F7F7F7;
       box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.12);
+      padding: 12px;
+
+      & > .a-list {
+        margin: -12px;
+      }
     }
   }
 

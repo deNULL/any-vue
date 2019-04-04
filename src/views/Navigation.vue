@@ -9,12 +9,16 @@
       </a-view>
     </template>
     <template v-slot:tab1>
-      Second tab content
+      <a-view title="Second tab">
+        Second tab content
+      </a-view>
     </template>
     <template v-slot:tab2>
-      <a-list :value="[[
-        { title: 'Just a list with some items', label: 'Description label' },
-      ]]"/>
+      <a-view title="Third tab">
+        <a-list :value="[[
+          { title: 'Just a list with some items', label: 'Description label' },
+        ]]"/>
+      </a-view>
     </template>
   </any-vue>
 </template>
